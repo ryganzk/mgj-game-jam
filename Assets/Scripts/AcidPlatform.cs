@@ -5,9 +5,9 @@ using UnityEngine;
 public class AcidPlatform : MonoBehaviour
 {
 
-    public float breakawayTime = 1.5f;
+    public float BreakawayTime = 1.5f;
 
-    private float currentTimer = 0.0f;
+    private float CurrentTimer = 0.0f;
 
     private bool Contact = false;
 
@@ -15,8 +15,8 @@ public class AcidPlatform : MonoBehaviour
     {
         if(Contact)
         {
-            currentTimer += Time.deltaTime;
-            if(currentTimer >= breakawayTime)
+            CurrentTimer += Time.deltaTime;
+            if(CurrentTimer >= BreakawayTime)
             {
                 Destroy(this.gameObject);
             }

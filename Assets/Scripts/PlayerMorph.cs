@@ -8,43 +8,43 @@ public class PlayerMorph : MonoBehaviour
     public GameObject[] Forms;
     private int CurrentForm = 0;
 
-    private PlayerControls controls;
-    private bool isTransformed = false;
+    private PlayerControls Controls;
+    private bool IsTransformed = false;
 
     private void Awake() 
     {
 
-        controls = new PlayerControls();
+        Controls = new PlayerControls();
 
-        controls.Gameplay.MorphScroll_L.performed += ctx => {
-            if(!isTransformed)
+        Controls.Gameplay.MorphScroll_L.performed += ctx => {
+            if(!IsTransformed)
             {
                 Debug.Log("Left");
                 ScrollLeft();
             }
         };
 
-        controls.Gameplay.MorphScroll_R.performed += ctx => {
-            if(!isTransformed)
+        Controls.Gameplay.MorphScroll_R.performed += ctx => {
+            if(!IsTransformed)
             {
                 Debug.Log("Right");
                 ScrollRight();
             }
         };
 
-        controls.Gameplay.Morph.performed += ctx => {
+        Controls.Gameplay.Morph.performed += ctx => {
             Morph();
         };
     }
 
     private void OnEnable() 
     {
-        controls.Gameplay.Enable();
+        Controls.Gameplay.Enable();
     }
 
     private void OnDisable() 
     {
-        controls.Gameplay.Disable();
+        Controls.Gameplay.Disable();
     }
 
     private void ScrollLeft()
@@ -72,13 +72,13 @@ public class PlayerMorph : MonoBehaviour
 
     private void Morph()
     {
-        if(isTransformed)
+        if(IsTransformed)
         {
             BaseForm.SetActive(true);
             BaseForm.transform.position = Forms[CurrentForm].transform.position;
             BaseForm.GetComponent<Rigidbody2D>().velocity = Forms[CurrentForm].GetComponent<Rigidbody2D>().velocity;
             Forms[CurrentForm].SetActive(false);
-            isTransformed = false; 
+            IsTransformed = false; 
         }
         else
         {
@@ -86,7 +86,7 @@ public class PlayerMorph : MonoBehaviour
             Forms[CurrentForm].transform.position = BaseForm.transform.position;
             Forms[CurrentForm].GetComponent<Rigidbody2D>().velocity = BaseForm.GetComponent<Rigidbody2D>().velocity;
             BaseForm.SetActive(false);
-            isTransformed = true; 
+            IsTransformed = true; 
         }
     }
 }
