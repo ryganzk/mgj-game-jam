@@ -6,70 +6,102 @@ using UnityEngine.InputSystem.Interactions;
 
 public class PlayerMovementController : MonoBehaviour
 {
+    private PlayerControls controls;
 
-    private PlayerControls Controls;
+    private Vector2 move = new Vector2();
 
-    private Vector2 Move = new Vector2();
+    public float speed = 5f;
+    public float jumpVelocity = 7f;
+    public float jumpLength = 0.3f;
 
-    public float Speed;
-    public float BigJumpVelocity;
-    public float SmallJumpVelocity;
-    private Rigidbody2D Rb; 
-    private Collider2D PlayerCollider;
+    private Rigidbody2D rb; 
+    private Collider2D playerCollider;
     [SerializeField]
-    private LayerMask GroundLayerMask;
+    private LayerMask groundLayerMask;
+    private float gravity;
+    private float jumpTimer;
 
-    private void Awake() {
-        Controls = new PlayerControls();
+    private void Awake()
+    {
+        controls = new PlayerControls();
 
-        Controls.Gameplay.Jump.performed += ctx => {
-            float jumpPower = SmallJumpVelocity;
+        controls.Gameplay.Jump.performed += ctx => {
+            float jumpPower = jumpVelocity;
             Jump(jumpPower);
         };
 
-        Controls.Gameplay.Jump.canceled += ctx => {
-            float jumpPower = SmallJumpVelocity;
-            Jump(jumpPower);
+        controls.Gameplay.Jump.canceled += ctx => {
+            StopJump();
         };
 
-        Controls.Gameplay.Move.performed += ctx => {
-            Move = ctx.ReadValue<Vector2>();
+        controls.Gameplay.Move.performed += ctx => {
+            move = ctx.ReadValue<Vector2>();
         };
 
-        Controls.Gameplay.Move.canceled += ctx => {
-            Move = Vector2.zero;
+        controls.Gameplay.Move.canceled += ctx => {
+            move = Vector2.zero;
         };
     }
 
-    private void OnEnable() {
-        Controls.Gameplay.Enable();
+    private void OnEnable()
+    {
+        controls.Gameplay.Enable();
     }
 
-    private void OnDisable() {
-        Controls.Gameplay.Disable();
+    private void OnDisable()
+    {
+        controls.Gameplay.Disable();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        Rb = GetComponent<Rigidbody2D>();
-        PlayerCollider = GetComponent<Collider2D>();
+        rb = GetComponent<Rigidbody2D>();
+        playerCollider = GetComponent<Collider2D>();
+        gravity = rb.gravityScale;
+        jumpTimer = jumpLength;
     }
 
-    private void FixedUpdate() {
-        float x = Move.x * Speed  * Time.deltaTime * 80;
-        Rb.velocity = new Vector2(x, Rb.velocity.y);
+    private void Update()
+    {
+        if (!IsGrounded())
+        {
+            jumpTimer -= Time.deltaTime;
+
+            if (jumpTimer <= 0f)
+            {
+                StopJump();
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        float x = move.x * speed  * Time.deltaTime * 80;
+        rb.velocity = new Vector2(x, rb.velocity.y);
     }
 
     private void Jump(float jumpPower)
     {
-        if(isGrounded())
-            Rb.velocity = Rb.velocity + Vector2.up * jumpPower;
+        if(IsGrounded())
+        {
+            rb.gravityScale = 0f;
+            rb.velocity = rb.velocity + Vector2.up * jumpPower;
+        }
     }
 
-    private bool isGrounded()
+    private void StopJump()
     {
-        RaycastHit2D hit = Physics2D.BoxCast(PlayerCollider.bounds.center, PlayerCollider.bounds.size, 0f, Vector2.down, 0.1f, GroundLayerMask);
-        return hit.collider != null;
+        rb.gravityScale = gravity;
+    }
+
+    private bool IsGrounded()
+    {  
+        if (rb.velocity.y == 0)
+        {
+            jumpTimer = jumpLength;
+            return true;
+        }
+        return false;
     }
 }
