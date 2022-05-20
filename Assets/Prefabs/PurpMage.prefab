@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 5282459807989828780}
   - component: {fileID: 5282459807989828768}
   - component: {fileID: 5282459807989828775}
+  - component: {fileID: 6563638326552719880}
   m_Layer: 0
-  m_Name: guy
+  m_Name: PurpMage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1
   jumpVelocity: 0
+  jumpLength: 1
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 0
@@ -168,3 +170,19 @@ MonoBehaviour:
   Forms:
   - {fileID: 11400000, guid: 1c32b9a3c19589b498716909661f431b, type: 2}
   - {fileID: 11400000, guid: f68c55b8ec2887b44b253eb391977995, type: 2}
+--- !u!114 &6563638326552719880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5282459807989828781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bac34a343cb5e4af596b1ec8cea2fd19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightCooldown: 0.3
+  heavyCooldown: 0.8
+  lightProjectile: {fileID: 391062967223195057, guid: faaa6fd4edb512f0b89f31847cec5597, type: 3}
+  heavyProjectile: {fileID: 8186225893719012700, guid: 3e483470bb119b91f869c6f0e2c69cd0, type: 3}

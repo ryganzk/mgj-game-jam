@@ -14,24 +14,25 @@ public class PlayerMovementController : MonoBehaviour
     public float jumpVelocity = 7f;
     public float jumpLength = 0.3f;
 
-    private Rigidbody2D rb; 
+    protected Rigidbody2D rb; 
     private Collider2D playerCollider;
     [SerializeField]
     private LayerMask groundLayerMask;
     private float gravity;
     private float jumpTimer;
+    private bool jumpPress;
 
     private void Awake()
     {
         controls = new PlayerControls();
 
         controls.Gameplay.Jump.performed += ctx => {
-            float jumpPower = jumpVelocity;
-            Jump(jumpPower);
+            jumpPress = true;
         };
 
         controls.Gameplay.Jump.canceled += ctx => {
             StopJump();
+            jumpPress = false;
         };
 
         controls.Gameplay.Move.performed += ctx => {
@@ -60,6 +61,7 @@ public class PlayerMovementController : MonoBehaviour
         playerCollider = GetComponent<Collider2D>();
         gravity = rb.gravityScale;
         jumpTimer = jumpLength;
+        jumpPress = false;
     }
 
     private void Update()
@@ -79,14 +81,21 @@ public class PlayerMovementController : MonoBehaviour
     {
         float x = move.x * speed  * Time.deltaTime * 80;
         rb.velocity = new Vector2(x, rb.velocity.y);
+
+        if (jumpPress)
+        {
+            Jump();
+        }
+
+        DetermineDirection();
     }
 
-    private void Jump(float jumpPower)
+    private void Jump()
     {
         if(IsGrounded())
         {
             rb.gravityScale = 0f;
-            rb.velocity = rb.velocity + Vector2.up * jumpPower;
+            rb.velocity = rb.velocity + Vector2.up * jumpVelocity;
         }
     }
 
@@ -103,5 +112,26 @@ public class PlayerMovementController : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    protected float DetermineDirection()
+    {
+        if (rb.velocity.x < 0)
+        {
+            transform.localRotation = Quaternion.Euler(0, 180, 0);
+            return -1f;
+        }
+        else if (rb.velocity.x > 0)
+        {
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            return 1f;
+        }
+        return -((transform.localRotation.y - 90) / 90);
+    }
+
+    protected Rigidbody2D GetPlayerRigidbody()
+    {
+        Debug.Log("ok!");
+        return rb;
     }
 }

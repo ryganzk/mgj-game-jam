@@ -2770,7 +2770,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5282459807989828771, guid: 614601eeab4cd4a439f2fc4fed99dbda, type: 3}
       propertyPath: m_Size.x
-      value: 7.63309
+      value: 4.9509425
       objectReference: {fileID: 0}
     - target: {fileID: 5282459807989828771, guid: 614601eeab4cd4a439f2fc4fed99dbda, type: 3}
       propertyPath: m_Size.y
@@ -2778,15 +2778,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5282459807989828771, guid: 614601eeab4cd4a439f2fc4fed99dbda, type: 3}
       propertyPath: m_Offset.x
-      value: 0.26997995
+      value: 0.2116692
       objectReference: {fileID: 0}
     - target: {fileID: 5282459807989828771, guid: 614601eeab4cd4a439f2fc4fed99dbda, type: 3}
       propertyPath: m_Offset.y
-      value: 0.0072877407
+      value: 0.007287979
       objectReference: {fileID: 0}
     - target: {fileID: 5282459807989828781, guid: 614601eeab4cd4a439f2fc4fed99dbda, type: 3}
       propertyPath: m_Name
-      value: guy
+      value: PurpMage
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5282459807989828775, guid: 614601eeab4cd4a439f2fc4fed99dbda, type: 3}

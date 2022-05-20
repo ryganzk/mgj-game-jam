@@ -71,6 +71,24 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LightAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""e57a318a-f6ab-4c3e-b4a1-7506c2112cf8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HeavyAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""352df80c-9bae-4dc5-a066-4719c669b7d6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -209,7 +227,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""cb5aa70d-23a8-43dd-a3b5-dcb11f04202f"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -227,6 +245,50 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Morph"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d15af35a-ddeb-414a-8a1f-ca2706f1f054"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LightAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04d5fddc-7364-46a2-a863-96234497e700"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LightAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4fcfc5a-3746-4df8-96de-d593784561c7"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""224dcd90-8653-419f-aa84-8a699a353afa"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -240,6 +302,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Gameplay_MorphScroll_L = m_Gameplay.FindAction("MorphScroll_L", throwIfNotFound: true);
         m_Gameplay_MorphScroll_R = m_Gameplay.FindAction("MorphScroll_R", throwIfNotFound: true);
         m_Gameplay_Morph = m_Gameplay.FindAction("Morph", throwIfNotFound: true);
+        m_Gameplay_LightAttack = m_Gameplay.FindAction("LightAttack", throwIfNotFound: true);
+        m_Gameplay_HeavyAttack = m_Gameplay.FindAction("HeavyAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -304,6 +368,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_MorphScroll_L;
     private readonly InputAction m_Gameplay_MorphScroll_R;
     private readonly InputAction m_Gameplay_Morph;
+    private readonly InputAction m_Gameplay_LightAttack;
+    private readonly InputAction m_Gameplay_HeavyAttack;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -313,6 +379,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @MorphScroll_L => m_Wrapper.m_Gameplay_MorphScroll_L;
         public InputAction @MorphScroll_R => m_Wrapper.m_Gameplay_MorphScroll_R;
         public InputAction @Morph => m_Wrapper.m_Gameplay_Morph;
+        public InputAction @LightAttack => m_Wrapper.m_Gameplay_LightAttack;
+        public InputAction @HeavyAttack => m_Wrapper.m_Gameplay_HeavyAttack;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -337,6 +405,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Morph.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMorph;
                 @Morph.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMorph;
                 @Morph.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMorph;
+                @LightAttack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLightAttack;
+                @LightAttack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLightAttack;
+                @LightAttack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLightAttack;
+                @HeavyAttack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnHeavyAttack;
+                @HeavyAttack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnHeavyAttack;
+                @HeavyAttack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnHeavyAttack;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -356,6 +430,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Morph.started += instance.OnMorph;
                 @Morph.performed += instance.OnMorph;
                 @Morph.canceled += instance.OnMorph;
+                @LightAttack.started += instance.OnLightAttack;
+                @LightAttack.performed += instance.OnLightAttack;
+                @LightAttack.canceled += instance.OnLightAttack;
+                @HeavyAttack.started += instance.OnHeavyAttack;
+                @HeavyAttack.performed += instance.OnHeavyAttack;
+                @HeavyAttack.canceled += instance.OnHeavyAttack;
             }
         }
     }
@@ -367,5 +447,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnMorphScroll_L(InputAction.CallbackContext context);
         void OnMorphScroll_R(InputAction.CallbackContext context);
         void OnMorph(InputAction.CallbackContext context);
+        void OnLightAttack(InputAction.CallbackContext context);
+        void OnHeavyAttack(InputAction.CallbackContext context);
     }
 }
